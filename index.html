@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        canvas {
+            max-width: 80vw;
+            height: 50vh;
+        }
+        body{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>The data updates in every 2 sec</h1>
+    <div style="width: 80%; margin: auto;">
+        <canvas id="realTimeChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('realTimeChart').getContext('2d');
+        let chart;
+        
+        const initialData = {
+            labels: [],
+            datasets: [{
+                label: 'Ion-Stock',
+                data: [],
+                borderColor: 'red',
+                borderWidth: 1,
+                fill: false,
+            }],
+        };
+
+        const chartConfig = {
+            type: 'line',
+            data: initialData,
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: 'Time',
+                        },
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Value',
+                        },
+                    },
+                },
+                animation: false,
+            },
+        };
+
+        chart = new Chart(ctx, chartConfig);
+
+
+        function addData() {
+            const newData = 60+Math.random() * 200; 
+            chart.data.labels.push(chart.data.labels.length);
+            chart.data.datasets[0].data.push(newData);
+            chart.update(); 
+        }
+
+        setInterval(addData, 2000);
+    </script>
+</body>
+</html>
